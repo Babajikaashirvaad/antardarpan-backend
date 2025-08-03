@@ -1,7 +1,17 @@
 function getUserTraits(userData) {
-  // Placeholder logic: fetch MBTI traits + astrology numerology stub
+  const mbtiMap = {
+    Introvert: 'Reflective and calm',
+    Extrovert: 'Expressive and vibrant',
+    Judging: 'Structured and analytical',
+    Perceiving: 'Flexible and spontaneous'
+  };
+
+  const mbtiTraits = userData.mbtiResponses.map(ans => mbtiMap[ans] || '').filter(Boolean).join(', ');
+
   return {
-    personality: 'Introvert, Intuitive, Feeling, Judging',
+    name: userData.name,
+    aiFriendName: userData.aiName || '',
+    personality: mbtiTraits,
     strengths: ['Empathetic', 'Insightful'],
     weaknesses: ['Overthinker'],
     purpose: 'Guide others with compassion and inner strength',
