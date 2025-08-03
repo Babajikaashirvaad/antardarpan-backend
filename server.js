@@ -6,7 +6,9 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 8080;
 
+// Enable CORS here ✅✅✅
 app.use(cors());
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
