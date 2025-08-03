@@ -8,11 +8,15 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 8080;
 
+// CORS Handling
 app.use(cors({
   origin: '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+// Explicit Preflight Handling (Important for Netlify)
+app.options('*', cors());
 
 app.use(express.json());
 app.use('/api', apiRoutes);
