@@ -6,6 +6,12 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+// ✅ GET Route for API Health Check
+router.get('/welcome', (req, res) => {
+  res.send('Welcome to Antardarpan API');
+});
+
+// POST Route for Welcome Analysis
 router.post('/welcome', async (req, res) => {
   try {
     const { userDetails, mbtiResponses } = req.body;
@@ -34,7 +40,7 @@ Do not add any extra explanation or text.
 
     const aiResponse = completion.choices[0].message.content;
 
-    // Parsing
+    // Parsing AI Response
     const welcomeMatch = aiResponse.match(/Welcome Message:\s*(.*)/i);
     const pastLifeMatch = aiResponse.match(/Past Life:\s*(.*)/i);
     const lifePurposeMatch = aiResponse.match(/Current Life Purpose:\s*(.*)/i);
@@ -51,6 +57,7 @@ Do not add any extra explanation or text.
   }
 });
 
+// POST Route for Chat Responses
 router.post('/chat', async (req, res) => {
   try {
     const { userDetails, mbtiResponses, question } = req.body;
