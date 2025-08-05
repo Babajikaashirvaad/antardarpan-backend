@@ -1,28 +1,38 @@
+// File: clean-backend/server.js
+
 const express = require('express');
+const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const apiRoutes = require('./routes/api');  // Import Routes First
+const path = require('path');
 
 dotenv.config();
 
-const app = express();  // Initialize app first
-const PORT = process.env.PORT || 8080;
+const apiRoutes = require('./routes/api');
 
-// CORS Handling
-app.use(cors({
-  origin: '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+const app = express();
+const PORT = process.env.PORT || 5000;
 
-// Explicit Preflight Handling
-app.options('*', cors());
-
+// Middleware
+app.use(cors());
 app.use(express.json());
 
-// Routes (AFTER app is initialized)
+// API Routes
 app.use('/api', apiRoutes);
 
-app.listen(PORT, () => {
-  console.log(`Antardarpan backend running on port ${PORT}`);
-});
+// Production Build Serve
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../client/dist')));
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../client/dist', 'index.html'));
+  });
+}
+
+// MongoDB Connection
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+}).then(() => {
+  console.log('MongoDB Connected');
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+}).catch(err => console.error('MongoDB Connection Error:', err));
