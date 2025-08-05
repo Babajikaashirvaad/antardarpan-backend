@@ -2,8 +2,8 @@
 
 const express = require('express');
 const router = express.Router();
-const User = require('../models/User');
-const Chat = require('../models/Chat');
+const User = require('../model/User');
+const Chat = require('../model/Chat');
 const { getAIResponse } = require('../utils/aiRequest');
 const { buildAntardarpanPrompt } = require('../utils/promptEngine');
 
